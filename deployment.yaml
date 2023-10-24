@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hra
+  labels:
+    app: hra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hra
+  template:
+    metadata:
+      name: hra
+      labels:
+        app: hra
+    spec:
+      containers:
+        - name: hra
+          image: docker.io/library/demo:4
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: servicehra
+  labels:
+    appservice: hra
+spec:
+  selector:
+    app: hra
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: NodePort
